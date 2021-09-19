@@ -47,25 +47,25 @@ class Sudoku:
         if not puzz:
             return "Puzzle has no possible solutions!"
 
-        string = '\n'
+        puzz_string = ''
         for p in range(len(puzz)):
 
             # start new line
             if p != 0 and p % self.dim == 0:
-                string = string + '\n'
+                puzz_string = puzz_string + '\n'
 
             # add horizontal borders
             if p != 0 and p % (self.dim * sqrt(self.dim)) == 0:
-                string = string + str('-' * (self.dim * 3 + 2)) + '\n'
+                puzz_string = puzz_string + str('-' * (self.dim * 3 + 2)) + '\n'
             
             # add vertical borders
             if p != 0 and p % self.dim != 0 and p % sqrt(self.dim) == 0:
-                string = string + '|' 
+                puzz_string = puzz_string + '|' 
 
             # add postion value to string
-            string = string + f' {str(puzz[p])} '
+            puzz_string = puzz_string + f' {str(puzz[p])} '
  
-        return string + '\n'
+        return puzz_string
 
     def row(self, pos):
         # return position row given index
