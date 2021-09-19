@@ -18,17 +18,12 @@ class Sudoku:
 
     @property
     def difficulty(self):
-        given = 0
-        for i in self.puzz:
-            if i != 0:
-                given += 1
-
-        area = self.dim ** 2
-        if given > .75 * area:
+        v = len(self.given) / self.dim ** 2
+        if v > .5:
             return 'easy'
-        elif given > .5 * area:
+        elif v > .3:
             return 'medium'
-        elif given > .25 * area:
+        elif v > .2:
             return 'hard'
         else:
             return 'very hard'
@@ -154,21 +149,25 @@ class Sudoku:
         if pos in self.given:
             return self.solve(puzz, pos+1)
         
+        # add 1 until a legal solution is reached for pos
         for _ in range(self.dim):
             puzz[pos] += 1
 
+            # find neighbor values based on neighbor indexes
             items = []
             for p in self.neighbors(pos):
                 items.append(puzz[p])
             
+            # if not in neighbors, move to next position
             if puzz[pos] not in items:
                 solved = self.solve(puzz, pos+1)
                 if solved:
                     return solved
                 else:
                     continue
-
+        
         puzz[pos] = 0
+
         return False
 
     def __repr__(self):
@@ -176,18 +175,32 @@ class Sudoku:
 
 
 if __name__ == '__main__':
-    puzz = [
+    puzz_0 = [
         0,0,0,0,0,7,0,3,4,
         0,3,0,0,0,0,0,0,6,
         0,0,4,6,0,8,0,0,0,
         0,9,0,0,1,0,5,0,0,
         0,0,5,2,0,6,3,0,0,
         0,0,2,0,4,0,0,7,0,
-        0,0,0,8,0,9,1,0,2,
+        0,0,0,8,0,9,1,0,0,
         9,0,0,0,0,0,0,5,0,
         6,8,0,3,0,0,0,0,0,
     ]
-    #puzz = [7,0,0,0,4,0,0,2,1,0,4,2,0,0,3,0,5,0,6,0,5,0,9,0,0,0,3,8,2,0,0,0,1,0,7,4,0,0,6,0,0,0,8,0,0,4,7,0,9,0,0,0,6,5,1,0,0,0,6,0,5,0,2,0,3,0,4,0,0,6,9,0,5,6,0,0,2,0,0,0,8]
+    puzz_1 = [
+        7,0,0,0,4,0,0,2,1,
+        0,4,2,0,0,3,0,5,0,
+        6,0,5,0,9,0,0,0,3,
+        8,2,0,0,0,1,0,7,4,
+        0,0,6,0,0,0,8,0,0,
+        4,7,0,9,0,0,0,6,5,
+        1,0,0,0,6,0,5,0,2,
+        0,3,0,4,0,0,6,9,0,
+        5,6,0,0,2,0,0,0,8
+    ]
 
-    puzz = Sudoku(puzz)
-    print(puzz.puzzle(solved=True))
+    puzz_0 = Sudoku(puzz_0)
+    puzz_1 = Sudoku(puzz_1)
+    print(puzz_0.puzzle(solved=True))
+    print()
+    print(puzz_1.puzzle(solved=True))
+    
