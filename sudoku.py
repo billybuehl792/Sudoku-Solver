@@ -37,7 +37,7 @@ class Sudoku:
         
         return given
 
-    def puzzle(self, solved=False):
+    def print_puzzle(self, solved=False):
         # return pretty string of puzzle
         # print solved puzzle
         if solved:
@@ -47,17 +47,25 @@ class Sudoku:
         if not puzz:
             return "Puzzle has no possible solutions!"
 
-        string = ''
-        x = 0
-        for i in puzz:
-            if x != 0 and x % self.dim == 0:
-                string = string + '\n'
-                x = 0
-            
-            string = string + f' {str(i)} '
-            x += 1
+        string = '\n'
+        for p in range(len(puzz)):
 
-        return string
+            # start new line
+            if p != 0 and p % self.dim == 0:
+                string = string + '\n'
+
+            # add horizontal borders
+            if p != 0 and p % (self.dim * sqrt(self.dim)) == 0:
+                string = string + str('-' * (self.dim * 3 + 2)) + '\n'
+            
+            # add vertical borders
+            if p != 0 and p % self.dim != 0 and p % sqrt(self.dim) == 0:
+                string = string + '|' 
+
+            # add postion value to string
+            string = string + f' {str(puzz[p])} '
+ 
+        return string + '\n'
 
     def row(self, pos):
         # return position row given index
@@ -200,7 +208,6 @@ if __name__ == '__main__':
 
     puzz_0 = Sudoku(puzz_0)
     puzz_1 = Sudoku(puzz_1)
-    print(puzz_0.puzzle(solved=True))
+    print(puzz_0.print_puzzle(solved=True))
     print()
-    print(puzz_1.puzzle(solved=True))
-    
+    print(puzz_1.print_puzzle(solved=True))
